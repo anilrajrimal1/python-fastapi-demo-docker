@@ -1,4 +1,4 @@
-name: Deploy to VM while pushing
+name: Deploy to VM
 
 on:
   push:
@@ -17,18 +17,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setting up SSH key
+      - name: Setup SSH key
         uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Permission to rsa key
-        run: chmod 600 /home/ubuntu/.ssh/id_rsa
-        
-      - name: SSH into VM for deploy
+      - name: Set permissions for SSH key
+        run: chmod 600 $HOME/.ssh/id_rsa
+
+      - name: SSH into VM and deploy
         run: |
-          ssh ubuntu@35.154.116.211 \
+          ssh ubuntu@172.31.26.176 \
             'cd /home/ubuntu/python-fastapi-demo-docker &&
             git pull &&
-            docker compose down &&
-            docker compose up -d --build'
+            docker-compose down &&
+            docker-compose up -d --build'
