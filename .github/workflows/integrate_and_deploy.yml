@@ -21,11 +21,10 @@ jobs:
         uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
       - name: SSH into VM and deploy
         run: |
-            ssh ubuntu@35.154.116.211'
-                cd /home/ubuntu/python-fastapi-demo-docker &&
-                git pull &&
-                docker-compose down &&
-                docker-compose up -d --build'
+          ssh ubuntu@35.154.116.211 \
+            'cd /home/ubuntu/python-fastapi-demo-docker &&
+            git pull &&
+            docker compose down &&
+            docker compose up -d --build'
