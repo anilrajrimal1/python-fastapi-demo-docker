@@ -23,7 +23,7 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: SSH into VM and deploy
         run: |
-          ssh ubuntu@35.154.116.211 \
+          ssh -v ubuntu@35.154.116.211 \
             'cd /home/ubuntu/python-fastapi-demo-docker &&
             git pull &&
             docker compose down &&
