@@ -17,15 +17,26 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup SSH key
-        uses: appleboy/ssh-action@v1.0.3
+      - name: Get VM SSH host and user
+        id: get_vm_conf
+        run: |
+          case "${{ github.ref }}" in
+          refs/heads/main)
+            export SERVER_IP=172.31.26.176
+            export SERVER_USERNAME=ubuntu
+            ;;
+          esac
+          echo "SERVER_IP=${SERVER_IP}" >> $GITHUB_OUTPUT
+          echo "SERVER_USERNAME=${SERVER_USERNAME}" >> $GITHUB_OUTPUT
 
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          port: ${{ secrets.SSH_PORT }}
-          script: whoami
+      - name: Configure SSH key
+        run: |
+          mkdir -p ~/.ssh
+          touch ~/.ssh/id_rsa
+          chmod 666 ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 400 ~/.ssh/id_rsa
+          ssh-keyscan ${{ steps.get_vm_conf.outputs.SERVER_IP }} >> ~/.ssh/known_hosts
 
       - name: SSH into VM and deploy
         run: |
