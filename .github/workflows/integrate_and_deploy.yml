@@ -43,5 +43,5 @@ jobs:
           ssh ubuntu@35.154.116.211 \
             'cd /home/ubuntu/python-fastapi-demo-docker &&
             git pull &&
-            docker-compose down &&
-            docker-compose up -d --build'
+            docker compose down &&
+            docker compose up -d --build'
