@@ -22,7 +22,7 @@ jobs:
         run: |
           case "${{ github.ref }}" in
           refs/heads/main)
-            export SERVER_IP=172.31.26.176
+            export SERVER_IP=35.154.116.211
             export SERVER_USERNAME=ubuntu
             ;;
           esac
@@ -40,7 +40,7 @@ jobs:
 
       - name: SSH into VM and deploy
         run: |
-          ssh ubuntu@172.31.26.176 \
+          ssh ubuntu@35.154.116.211 \
             'cd /home/ubuntu/python-fastapi-demo-docker &&
             git pull &&
             docker-compose down &&
